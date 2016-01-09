@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+    
+<html>
+    <head>
+        <title>jsTreeNodePicker DEMO</title>
+        
+        <link rel="stylesheet" media="screen" href="src/stylesheets/bootstrap.min.css" />
+        <script src="src/libs/jquery/jquery-1.11.3.min.js" type="text/javascript"></script>
+        <script src="src/libs/bootstrap/bootstrap.min.js" type="text/javascript"></script>
+        
+        <link rel="stylesheet" type="text/css" href="src/stylesheets/jquery_ui/jquery-ui.min.css">
+        <script src="src/libs/jquery_ui/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+        <link href="src/stylesheets/tagit/jquery.tagit.css" rel="stylesheet" type="text/css">
+        <script src="src/libs/tagit/tag-it.js" type="text/javascript" charset="utf-8"></script>
+        
+        <link href="src/libs/jstree/themes/default/style.min.css" rel="stylesheet" type="text/css">
+        <script src="src/libs/jstree/jstree.min.js"></script>
+        <script src="src/javascripts/jsTreeNodePicker/jsTreeNodePicker.js"></script>
+        
+    </head>
+    <body>
+        <div id="dlgPickCategories" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Modal Header</h4>
+                    </div>
+                    <div class="modal-body">
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button id="test0" type="button" class="btnTreeNodePickerClearAll btn btn-info pull-left">Clear All</button>
+                        <button type="button" class="btnTreeNodePickerCancel btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btnTreeNodePickerOK btn btn-primary" >OK</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+        <div class="container">
+            <h2>jsTreeNodePicker Example</h2>
+            <div id="categoriesPicker">
+            </div>
+        </div>
+        
+        <script>
+            $(document).ready(function() {
+                var picker1 = $("#categoriesPicker").jsTreeNodePicker({
+                    "dialogId": "dlgPickCategories",
+                    "tagLimit": 5,
+                    "data": [
+                                {
+                                    "id": "Root 1",
+                                    "text": "Root 1",
+                                    "state": {
+                                        "opened": true,
+                                        "disabled": false,
+                                        "selected": false
+                                    },
+                                    "children": [
+                                        {
+                                            "id": "Child 1",
+                                            "text": "Child 1",
+                                        },
+                                        {
+                                            "id": "Child 2",
+                                            "text": "Child 2",
+                                        }
+                                    ],
+                                    "li_attr": null,
+                                    "a_att": null
+                                },
+                                {
+                                    "id": "Root 2",
+                                    "text": "Root 2",
+                                    "state": {
+                                        "opened": true,
+                                        "disabled": false,
+                                        "selected": false
+                                    },
+                                    "children": [
+                                        {
+                                            "id": "Child 3",
+                                            "text": "Child 3",
+                                        },
+                                        {
+                                            "id": "Child 4",
+                                            "text": "Child 4",
+                                        }
+                                    ],
+                                    "li_attr": null,
+                                    "a_att": null
+                                },
+                                {
+                                    "id": "Root 3",
+                                    "text": "Root 3"
+                                },
+                                {
+                                    "id": "Root 4",
+                                    "text": "Root 4"
+                                },
+                                {
+                                    "id": "Root 4",
+                                    "text": "Root 4"
+                                },
+                                {
+                                    "id": "Root 5",
+                                    "text": "Root 5"
+                                }
+                            ],
+                    "selectedNodes": [],
+                    "tagitOptions": {
+                        "fieldName": "catsNamesList",
+                        "allowSpaces": true,
+                        "showAutocompleteOnFocus": false,
+                        "readOnly": true
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
