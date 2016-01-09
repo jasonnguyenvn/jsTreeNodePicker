@@ -9,11 +9,11 @@ A plugin for Bootstrap 3, Jquery, Jquery UI, Tagit and jsTree
 
 * License Infomation
 
-  PROJECT: jsTreeNodePicker
-  Version: 0.2
-  Note:    Recommended for Bootstrap >=3, JQuery >=1.11.3, JQuery UI >=1.11.4, tagit >=2.0, jsTree >=3.2.1
-  AUTHOR:  (Jason Steve Nguyen) Hau Nguyen Viet
-  Email:   nvconghau1995@gmail.com
+  + PROJECT: jsTreeNodePicker
+  + Version: 0.2
+  + Note:    Recommended for Bootstrap >=3, JQuery >=1.11.3, JQuery UI >=1.11.4, tagit >=2.0, jsTree >=3.2.1
+  + AUTHOR:  (Jason Steve Nguyen) Hau Nguyen Viet
+  + Email:   nvconghau1995@gmail.com
   (c) 2016 Hau Nguyen Viet.
         Licensed under the Apache License, Version 2.0 (the "License");
         you may not use this file except in compliance with the License.
