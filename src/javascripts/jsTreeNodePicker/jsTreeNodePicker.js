@@ -33,6 +33,8 @@
         var pickerObj = this.each(function() {
             modalSelector = $("#"+opts.dialogId);
 
+
+
             // Append open picker dialog button
             var btnOpenContainer = $('<div id="btnOpen'+opts.dialogId+'_container" ></div>');
             $(this).append(btnOpenContainer);
@@ -42,13 +44,14 @@
             btnOpenContainer.append(btnOpen);
 
             var modalBody = modalSelector.children(".modal-dialog").children(".modal-content").children(".modal-body");
+            modalBody.css(opts.sizeCSS);
 
             // Add place to show error message
             errorMessageContainer = $('<div id="'+opts.dialogId+'_error_container" class="alert alert-danger" style="display: none;"></div>');
             modalBody.append(errorMessageContainer);
 
             var treeControlId = opts.dialogId + "_treeControl";
-            var treeControlContainer = $('<div id="'+ treeControlId +'_container" style="overflow"></div>');
+            var treeControlContainer = $('<div id="'+ treeControlId +'_container" style="overflow: auto;max-height:95%;max-width:99%;"></div>');
             modalBody.append(treeControlContainer);
             treeControl = $('<div id="'+ treeControlId +'" ></div>');
 
@@ -142,7 +145,7 @@
 
             }
 
-            $("#"+ pickerObj.opts.dialogId).modal("toggle");
+            $("#dlgPickCategories").modal("toggle");
             pickerObj.opts.selectedNodes = selectedNodes;
         });
 
@@ -164,6 +167,24 @@
 
         });
 
+        if (pickerObj.opts.expandChildOnSingleClick === true) {
+            pickerObj.treeControl.on("select_node.jstree", function (e, data) { data.instance.toggle_node(data.node); });
+            /* pickerObj.treeControl.on("click",function (e) {
+              var li = $(e.target).closest("li");
+              var node =  pickerObj.treeControl.jstree(true).get_node(li[0].id);
+
+              console.log(node.state.opened);
+
+               if(node.state.opened == true) {
+                    pickerObj.treeControl.jstree(true).close_node(node);
+                    node.state.opened = false;
+               } else {
+                    pickerObj.treeControl.jstree(true).open_node(node);
+                    node.state.opened = true;
+               }
+            });*/
+        }
+
 
 
         return pickerObj;
@@ -171,7 +192,16 @@
     }
 
     $.fn.jsTreeNodePicker.defaults = {
+        "sizeCSS": {
+            "min-height": "300px",
+            "max-height": "300px",
+            "height": "300px",
+            "min-width": "600px",
+            "max-width": "600px",
+            "width": "600px",
+        },
         "dialogId": "pickerDlg",
+        "expandChildOnSingleClick": true,
         "tagLimit": 5,
         "expandAllNodes": true,
         "data": [],
