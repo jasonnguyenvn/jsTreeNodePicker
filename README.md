@@ -2,9 +2,12 @@
 A plugin for Bootstrap 3, Jquery, Jquery UI, Tagit and jsTree
 
 * Overview
-  This is a plugin for Bootstrap 3 to create a "picker control". When you want to choose some item in a tree and return to a form input. For example, you have an entry and want to pick some categories for this entry. A category may be a child of another. This plugin is a helpful tool for you.
+
+  This is a plugin for Bootstrap 3 to create a "picker control" when you want to choose some item in a tree and return to a form input. 
+  For example, you have an entry and want to pick some categories for this entry. A category may be a child of another. This plugin is a helpful tool for you.
 
 * IMPORTANT
+
   This plugin is still in development. Some functions, apis, options/settings may change in futures.
 
 * License Infomation
@@ -13,7 +16,8 @@ A plugin for Bootstrap 3, Jquery, Jquery UI, Tagit and jsTree
   + Version: 0.2
   + Note:    Recommended for Bootstrap >=3, JQuery >=1.11.3, JQuery UI >=1.11.4, tagit >=2.0, jsTree >=3.2.1
   + AUTHOR:  (Jason Steve Nguyen) Hau Nguyen Viet
-  + Email:   nvconghau1995@gmail.com
+  + Email:   jasonnguyenvn@outlook.com
+  
   (c) 2016 Hau Nguyen Viet.
         Licensed under the Apache License, Version 2.0 (the "License");
         you may not use this file except in compliance with the License.
