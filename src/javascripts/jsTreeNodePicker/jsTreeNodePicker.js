@@ -145,7 +145,7 @@
 
             }
 
-            $("#dlgPickCategories").modal("toggle");
+            pickerObj.modalSelector.modal("toggle");
             pickerObj.opts.selectedNodes = selectedNodes;
         });
 
@@ -153,6 +153,11 @@
             pickerObj.treeControl.jstree(true).deselect_all();
             for (x in pickerObj.opts.selectedNodes) {
                 treeControl.jstree(true).select_node(pickerObj.opts.selectedNodes[x]);
+            }
+            if (opts.expandAllNodes === true) {
+               pickerObj.treeControl.jstree("open_all");
+            } else {
+               pickerObj.treeControl.jstree("close_all");
             }
         });
 
