@@ -168,7 +168,15 @@
         });
 
         if (pickerObj.opts.expandChildOnSingleClick === true) {
-            pickerObj.treeControl.on("select_node.jstree", function (e, data) { data.instance.toggle_node(data.node); });
+            pickerObj.treeControl.on("select_node.jstree", function (e, data) {
+                if(data.node.state.opened == true) {
+                    pickerObj.treeControl.jstree(true).close_node(data.node);
+//                    node.state.opened = false;
+               } else {
+                    pickerObj.treeControl.jstree(true).open_node(data.node);
+//                    node.state.opened = true;
+               }
+            });
             /* pickerObj.treeControl.on("click",function (e) {
               var li = $(e.target).closest("li");
               var node =  pickerObj.treeControl.jstree(true).get_node(li[0].id);
