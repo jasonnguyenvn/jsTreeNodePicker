@@ -47,11 +47,11 @@
             modalBody.css(opts.sizeCSS);
 
             // Add place to show error message
-            errorMessageContainer = $('<div id="'+opts.dialogId+'_error_container" class="alert alert-danger" style="display: none;"></div>');
+            errorMessageContainer = $('<div id="'+opts.dialogId+'_error_container" class="alert alert-danger" style="display: none;margin-bottom:10px;"></div>');
             modalBody.append(errorMessageContainer);
 
             var treeControlId = opts.dialogId + "_treeControl";
-            var treeControlContainer = $('<div id="'+ treeControlId +'_container" style="overflow: auto;max-height:95%;max-width:99%;"></div>');
+            var treeControlContainer = $('<div id="'+ treeControlId +'_container" style="overflow: auto;max-height:80%;max-width:99%;"></div>');
             modalBody.append(treeControlContainer);
             treeControl = $('<div id="'+ treeControlId +'" ></div>');
 
@@ -88,6 +88,10 @@
                 showAutocompleteOnFocus:  opts.tagitOptions.showAutocompleteOnFocus,
                 readOnly: opts.tagitOptions.readOnly
             });
+
+            if (opts.removeTagItBorder === true) {
+                tagitControl.removeClass("ui-widget-content");
+            }
 
             if (opts.selectedNodes.length > 0) {
                 tagitControl.tagit("removeAll");
@@ -219,6 +223,7 @@
         "expandAllNodes": true,
         "data": [],
         "selectedNodes": [],
+        "removeTagItBorder": false,
         "tagitOptions": {
             "fieldName": "tagList",
             "allowSpaces": true,
