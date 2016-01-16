@@ -29,7 +29,8 @@
         var treeControl;
         var tagitControl;
         var errorMessageContainer;
-
+		var modalBody;
+		var treeControlContainer ;
         var pickerObj = this.each(function() {
             modalSelector = $("#"+opts.dialogId);
 
@@ -43,7 +44,7 @@
 
             btnOpenContainer.append(btnOpen);
 
-            var modalBody = modalSelector.children(".modal-dialog").children(".modal-content").children(".modal-body");
+            modalBody = modalSelector.children(".modal-dialog").children(".modal-content").children(".modal-body");
             modalBody.css(opts.sizeCSS);
 
             // Add place to show error message
@@ -51,7 +52,9 @@
             modalBody.append(errorMessageContainer);
 
             var treeControlId = opts.dialogId + "_treeControl";
-            var treeControlContainer = $('<div id="'+ treeControlId +'_container" style="overflow: auto;max-height:80%;max-width:99%;"></div>');
+
+            treeControlContainer = $('<div id="'+ treeControlId +'_container" style="overflow: auto;'
+                        +'height: 99%;max-width:95%;"></div>');
             modalBody.append(treeControlContainer);
             treeControl = $('<div id="'+ treeControlId +'" ></div>');
 
@@ -104,7 +107,9 @@
         });
 
         pickerObj.modalSelector = modalSelector;
+		pickerObj.modalBody = modalBody;
         pickerObj.btnOpen = btnOpen;
+		pickerObj.treeControlContainer = treeControlContainer;
         pickerObj.treeControl = treeControl;
         pickerObj.tagitControl = tagitControl;
         pickerObj.errorMessageContainer = errorMessageContainer;
@@ -170,8 +175,14 @@
                 pickerObj.errorMessageContainer.text(pickerObj.opts.errMessages.err_you_can_not_pick_more_than
                     + ' ' + pickerObj.opts.tagLimit + ' ' + pickerObj.opts.labels.text.label_node);
                 pickerObj.errorMessageContainer.show();
+				
+				var treeMaxHeight = pickerObj.modalBody.innerHeight() - 
+						pickerObj.errorMessageContainer.outerHeight();
+				pickerObj.treeControlContainer.css({"height": "75%"});
+				pickerObj.errorMessageContainer.css({"height": "20%"});
             } else {
                 pickerObj.errorMessageContainer.hide();
+				pickerObj.treeControlContainer.css({"height": "99%"});
             }
 
         });
