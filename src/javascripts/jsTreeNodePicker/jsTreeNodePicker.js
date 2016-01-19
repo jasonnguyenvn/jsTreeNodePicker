@@ -1,6 +1,6 @@
 /**
  * PROJECT: jsTreeNodePicker
- * Version: 0.2
+ * Version: 0.5
  * Note:    Recommended for Bootstrap >=3, JQuery >=1.11.3, JQuery UI >=1.11.4, tagit >=2.0, jsTree >=3.2.1
  * AUTHOR:  (Jason Steve Nguyen) Hau Nguyen Viet
  * Email:   nvconghau1995@gmail.com
@@ -19,6 +19,48 @@
  */
 
 (function( $ ) {
+    var _count = -1;
+
+    function __getSearchFunction(e, selectedNode, result) {
+        if(e.id === selectedNode) {
+            return true;
+        }
+
+        if (e.children == null) {
+            return false;
+        }
+
+        if (e.children.length < 1) {
+            return false;
+        }
+
+
+        var tryGet = $.grep(e.children, function(e2) { return __getSearchFunction(e2, selectedNode, result); } );
+        if (tryGet.length == 0) {
+              return false;
+        } else {
+            result.push(tryGet[0]);
+        }
+
+        return false;
+
+    }
+
+    function __getSelectedNodeObj(data, selectedNode) {
+        var result = [];
+        var tryGet = $.grep(data, function(e){
+            return __getSearchFunction(e, selectedNode, result);
+
+        });
+        if (tryGet.length == 0) {
+            if(result.length > 0) {
+                return result[0];
+            }
+            return null;
+        } else {
+          return tryGet[0];
+        }
+    }
 
 
     $.fn.jsTreeNodePicker = function(options ) {
@@ -31,10 +73,11 @@
         var errorMessageContainer;
 		var modalBody;
 		var treeControlContainer ;
+		var idValuesContainer;
         var pickerObj = this.each(function() {
             modalSelector = $("#"+opts.dialogId);
 
-
+            _count++;
 
             // Append open picker dialog button
             var btnOpenContainer = $('<div id="btnOpen'+opts.dialogId+'_container" ></div>');
@@ -77,12 +120,15 @@
 
             });
 
+            idValuesContainer = $('<div id="idValuesContainer_'+_count+'" ></div>');
+            $(this).append(idValuesContainer);
+
 
             // Append tagit control
-            var tagitControlContainer = $('<div id="tagit_control_container" class="row" style="padding-left: 28px;"></div>');
+            var tagitControlContainer = $('<div id="tagit_control_container_'+_count+'" class="row" style="padding-left: 28px;"></div>');
             $(this).append(tagitControlContainer);
 
-            tagitControl = $('<ul id="tagit_control" class="col-md-8"></ul>');
+            tagitControl = $('<ul id="tagit_control_'+_count+'" class="col-md-8"></ul>');
             tagitControlContainer.append(tagitControl);
             tagitControl.tagit({
                 fieldName: opts.tagitOptions.fieldName,
@@ -91,6 +137,7 @@
                 showAutocompleteOnFocus:  opts.tagitOptions.showAutocompleteOnFocus,
                 readOnly: opts.tagitOptions.readOnly
             });
+            opts.tagitOptions.fieldNameId = opts.tagitOptions.fieldName + "_ids";
 
             if (opts.removeTagItBorder === true) {
                 tagitControl.removeClass("ui-widget-content");
@@ -99,12 +146,21 @@
             if (opts.selectedNodes.length > 0) {
                 tagitControl.tagit("removeAll");
                 for (x in opts.selectedNodes) {
-                    tagitControl.tagit('createTag', opts.selectedNodes[x]);
-
+                    var tryGet = __getSelectedNodeObj(opts.data, opts.selectedNodes[x]);
+                    if (tryGet == null) {
+                        continue;
+                    } else {
+                      tagitControl.tagit('createTag', tryGet.text);
+                      idValuesContainer.append('<input type="hidden" name="'
+                            +opts.tagitOptions.fieldNameId
+                            +'" value="'+tryGet.id+'" >');
+                    }
                 }
             }
 
         });
+
+        pickerObj.idValuesContainer = idValuesContainer;
 
         pickerObj.modalSelector = modalSelector;
 		pickerObj.modalBody = modalBody;
@@ -149,9 +205,18 @@
                 return false;
             }
             pickerObj.tagitControl.tagit("removeAll");
-            for (x in selectedNodes) {
-                pickerObj.tagitControl.tagit('createTag', selectedNodes[x]);
+            idValuesContainer.empty();
 
+            for (x in selectedNodes) {
+                var tryGet = __getSelectedNodeObj(pickerObj.opts.data, selectedNodes[x]);
+                if (tryGet == null) {
+                    continue;
+                } else {
+                  tagitControl.tagit('createTag', tryGet.text);
+                  idValuesContainer.append('<input type="hidden" name="'
+                        +pickerObj.opts.tagitOptions.fieldNameId
+                        +'" value="'+tryGet.id+'" >');
+                }
             }
 
             pickerObj.modalSelector.modal("toggle");
@@ -160,10 +225,16 @@
 
         pickerObj.btnOpen.click(function () {
             pickerObj.treeControl.jstree(true).deselect_all();
+
             for (x in pickerObj.opts.selectedNodes) {
-                treeControl.jstree(true).select_node(pickerObj.opts.selectedNodes[x]);
+                var tryGet = __getSelectedNodeObj(pickerObj.opts.data, pickerObj.opts.selectedNodes[x]);
+                if (tryGet == null) {
+                    continue;
+                } else {
+                    treeControl.jstree(true).select_node(tryGet.id);
+                }
             }
-            if (opts.expandAllNodes === true) {
+            if (pickerObj.opts.expandAllNodes === true) {
                pickerObj.treeControl.jstree("open_all");
             } else {
                pickerObj.treeControl.jstree("close_all");
@@ -175,8 +246,8 @@
                 pickerObj.errorMessageContainer.text(pickerObj.opts.errMessages.err_you_can_not_pick_more_than
                     + ' ' + pickerObj.opts.tagLimit + ' ' + pickerObj.opts.labels.text.label_node);
                 pickerObj.errorMessageContainer.show();
-				
-				var treeMaxHeight = pickerObj.modalBody.innerHeight() - 
+
+				var treeMaxHeight = pickerObj.modalBody.innerHeight() -
 						pickerObj.errorMessageContainer.outerHeight();
 				pickerObj.treeControlContainer.css({"height": "75%"});
 				pickerObj.errorMessageContainer.css({"height": "20%"});
